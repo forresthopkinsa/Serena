@@ -15,6 +15,7 @@ class Main {
 
     val gson = GsonBuilder().serializeNulls().create()
     val config = ConfigFactory.defaultApplication()
+
     val dyn = config.getString("dyn")
     val dtsg = config.getString("dtsg")
     val jazoest = config.getString("jazoest")
@@ -23,25 +24,25 @@ class Main {
 
     fun request() {
 
-        val requestRoot = RequestRoot(Request("1508526735892416", QueryParams("100000746827681", 200, 1, true, null)))
+        val requestRoot = RequestRoot(Request("1508526735892416", QueryParams("100000746827681", 15)))
         val query = gson.toJson(requestRoot)
 
         val client = OkHttpClient()
 
         val form = FormBody.Builder()
-                .add("__a", "1")
-                .add("__be", "1")
-                .add("__dyn", dyn)
-                .add("__pc", "PHASED:DEFAULT")
-                .add("__req", "cf")
-                .add("__rev", "3559466")
-                .add("__spin_b", "trunk")
-                .add("__spin_r", "3559466")
-                .add("__spin_t", "1515297453")
-                .add("__user", "100005901819196")
-                .add("batch_name", "MessengerGraphQLThreadFetcherRe")
+//                .add("__a", "1")
+//                .add("__be", "1")
+//                .add("__dyn", dyn)
+//                .add("__pc", "PHASED:DEFAULT")
+//                .add("__req", "cf")
+//                .add("__rev", "3559466")
+//                .add("__spin_b", "trunk")
+//                .add("__spin_r", "3559466")
+//                .add("__spin_t", "1515297453")
+//                .add("__user", "100005901819196")
+//                .add("batch_name", "MessengerGraphQLThreadFetcherRe")
                 .add("fb_dtsg", dtsg)
-                .add("jazoest", jazoest)
+//                .add("jazoest", jazoest)
                 .add("queries", query)
                 .build()
 
@@ -64,8 +65,6 @@ class Main {
         val obj = gson.fromJson(json, ResponseRoot::class.java)
 
         val messages = obj.response.data.messageThread.messages.nodes
-
-        println(messages.last().message.text.takeUnless { it.isEmpty() } ?: "empty")
 
         messages.forEach { println(it.messageSender.id + " : " + Date(it.timestampPrecise.toLong()) + " : " + it.message.text) }
 

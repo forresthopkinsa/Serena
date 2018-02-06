@@ -223,7 +223,7 @@ data class Request(
 data class QueryParams(
 		@SerializedName("id") val id: String, //100000746827681
 		@SerializedName("message_limit") val messageLimit: Int, //200
-		@SerializedName("load_messages") val loadMessages: Int, //1
-		@SerializedName("load_read_receipts") val loadReadReceipts: Boolean, //true
-		@SerializedName("before") val before: Int? //null
+		@SerializedName("load_messages") val loadMessages: Int = 1, //1
+		@SerializedName("load_read_receipts") val loadReadReceipts: Boolean = true, //true
+		@SerializedName("before") val before: Int? = null //null
 )
