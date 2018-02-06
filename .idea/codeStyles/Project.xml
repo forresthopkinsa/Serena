@@ -1,0 +1,15 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <JavaCodeStyleSettings>
+      <option name="JD_ADD_BLANK_AFTER_PARM_COMMENTS" value="true" />
+      <option name="JD_ADD_BLANK_AFTER_RETURN" value="true" />
+    </JavaCodeStyleSettings>
+    <codeStyleSettings language="JAVA">
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+        <option name="SMART_TABS" value="true" />
+        <option name="KEEP_INDENTS_ON_EMPTY_LINES" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
+  </code_scheme>
+</component>
