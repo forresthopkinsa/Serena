@@ -1,3 +1,4 @@
+import org.gradle.script.lang.kotlin.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
@@ -8,7 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(kotlinModule("gradle-plugin", kotlin_version))
+        classpath(kotlin("gradle-plugin", kotlin_version))
     }
 }
 
@@ -17,6 +18,7 @@ version = "0.1-SNAPSHOT"
 
 plugins {
     java
+    application
 }
 
 apply {
@@ -25,13 +27,17 @@ apply {
 
 val kotlin_version: String by extra
 
+application {
+    mainClassName = "MainKt"
+}
+
 repositories {
     mavenCentral()
     jcenter()
 }
 
 dependencies {
-    compile(kotlinModule("stdlib-jdk8", kotlin_version))
+    compile(kotlin("stdlib-jdk8", kotlin_version))
     compile("com.squareup.okhttp3", "okhttp", "3.9.1")
     compile("com.google.code.gson", "gson", "2.8.2")
     compile("io.github.config4k", "config4k", "0.3.2")
