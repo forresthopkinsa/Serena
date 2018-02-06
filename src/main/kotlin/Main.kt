@@ -16,9 +16,7 @@ class Main {
     val gson = GsonBuilder().serializeNulls().create()
     val config = ConfigFactory.defaultApplication()
 
-    val dyn = config.getString("dyn")
     val dtsg = config.getString("dtsg")
-    val jazoest = config.getString("jazoest")
     val c_user = config.getString("c_user")
     val xs = config.getString("xs")
 
@@ -30,19 +28,7 @@ class Main {
         val client = OkHttpClient()
 
         val form = FormBody.Builder()
-//                .add("__a", "1")
-//                .add("__be", "1")
-//                .add("__dyn", dyn)
-//                .add("__pc", "PHASED:DEFAULT")
-//                .add("__req", "cf")
-//                .add("__rev", "3559466")
-//                .add("__spin_b", "trunk")
-//                .add("__spin_r", "3559466")
-//                .add("__spin_t", "1515297453")
-//                .add("__user", "100005901819196")
-//                .add("batch_name", "MessengerGraphQLThreadFetcherRe")
                 .add("fb_dtsg", dtsg)
-//                .add("jazoest", jazoest)
                 .add("queries", query)
                 .build()
 
