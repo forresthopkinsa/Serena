@@ -15,6 +15,10 @@ buildscript {
 group = "com.forresthopkinsa"
 version = "0.1-SNAPSHOT"
 
+plugins {
+    java
+}
+
 apply {
     plugin("kotlin")
 }
