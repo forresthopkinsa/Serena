@@ -1,10 +1,10 @@
 import com.google.gson.annotations.SerializedName
 
-data class Root(
-		@SerializedName("o0") val o0: O0
+data class ResponseRoot(
+		@SerializedName("o0") val response: Response
 )
 
-data class O0(
+data class Response(
 		@SerializedName("data") val data: Data
 )
 
@@ -206,4 +206,24 @@ data class CustomizationInfo(
 data class ParticipantCustomization(
 		@SerializedName("participant_id") val participantId: String,
 		@SerializedName("nickname") val nickname: String
+)
+
+// request object
+
+
+data class RequestRoot(
+		@SerializedName("o0") val request: Request
+)
+
+data class Request(
+		@SerializedName("doc_id") val docId: String, //1508526735892416
+		@SerializedName("query_params") val queryParams: QueryParams
+)
+
+data class QueryParams(
+		@SerializedName("id") val id: String, //100000746827681
+		@SerializedName("message_limit") val messageLimit: Int, //200
+		@SerializedName("load_messages") val loadMessages: Int, //1
+		@SerializedName("load_read_receipts") val loadReadReceipts: Boolean, //true
+		@SerializedName("before") val before: Int? //null
 )

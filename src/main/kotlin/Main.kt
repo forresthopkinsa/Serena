@@ -1,4 +1,4 @@
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.typesafe.config.ConfigFactory
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
@@ -13,16 +13,18 @@ fun main(args: Array<String>) {
 
 class Main {
 
+    val gson = GsonBuilder().serializeNulls().create()
     val config = ConfigFactory.defaultApplication()
     val dyn = config.getString("dyn")
     val dtsg = config.getString("dtsg")
     val jazoest = config.getString("jazoest")
+    val c_user = config.getString("c_user")
+    val xs = config.getString("xs")
 
     fun request() {
 
-        val query = """
-            {"o0":{"doc_id":"1508526735892416","query_params":{"id":"100000746827681","message_limit":200,"load_messages":1,"load_read_receipts":true,"before":null}}}
-            """.trimIndent()
+        val requestRoot = RequestRoot(Request("1508526735892416", QueryParams("100000746827681", 200, 1, true, null)))
+        val query = gson.toJson(requestRoot)
 
         val client = OkHttpClient()
 
@@ -46,16 +48,9 @@ class Main {
         val request = Request.Builder()
                 .url("https://www.facebook.com/api/graphqlbatch/")
                 .post(form)
-                .addHeader("Origin", "https://www.facebook.com")
-                .addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36")
-                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .addHeader("Accept", "*/*")
-                .addHeader("Referer", "https://www.facebook.com/messages/t/serena.kronschnabel")
                 .addHeader("Accept-Encoding", "deflate")
-                .addHeader("Accept-Language", "en-US,en;q=0.9")
-                .addHeader("Cookie", "datr=PtBwWiWbl-8hAmRLalktnDgm; sb=5ihxWrxTbz6GmS1P_Ckd7H97; c_user=100005901819196; xs=14%3ArvCyyB7QJg3VRg%3A2%3A1517365478%3A1961%3A2315; wd=502x625; act=1517856858180%2F47; presence=EDvF3EtimeF1517856868EuserFA21B05901819196A2EstateFDutF1517856868136CEchFDp_5f1B05901819196F557CC")
+                .addHeader("Cookie", "c_user=$c_user; xs=$xs")
                 .addHeader("Cache-Control", "no-cache")
-                .addHeader("Postman-Token", "f569a365-85ea-4a83-d7ce-f8523eb3c0a9")
                 .build()
 
         val response = client.newCall(request).execute()
@@ -66,9 +61,9 @@ class Main {
 
         println(json)
 
-        val obj = Gson().fromJson(json, Root::class.java)
+        val obj = gson.fromJson(json, ResponseRoot::class.java)
 
-        val messages = obj.o0.data.messageThread.messages.nodes
+        val messages = obj.response.data.messageThread.messages.nodes
 
         println(messages.last().message.text.takeUnless { it.isEmpty() } ?: "empty")
 
