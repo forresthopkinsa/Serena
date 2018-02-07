@@ -1,6 +1,8 @@
+package com.forresthopkinsa.model
+
 import com.google.gson.annotations.SerializedName
 
-data class ResponseRoot(
+data class ResponseContainer(
 		@SerializedName("o0") val response: Response
 )
 
@@ -50,7 +52,7 @@ data class MessageThread(
 		@SerializedName("participants_event_status") val participantsEventStatus: List<Any>,
 		@SerializedName("page_comm_item") val pageCommItem: Any,
 		@SerializedName("all_participants") val allParticipants: AllParticipants,
-		@SerializedName("messages") val messages: Messages,
+		@SerializedName("messages") val messagePage: MessagePage,
 		@SerializedName("read_receipts") val readReceipts: ReadReceipts
 )
 
@@ -111,9 +113,9 @@ data class Pack(
 		@SerializedName("id") val id: String
 )
 
-data class Messages(
+data class MessagePage(
 		@SerializedName("page_info") val pageInfo: PageInfo,
-		@SerializedName("nodes") val nodes: List<FullMessageNode>
+		@SerializedName("nodes") val messages: List<FullMessageNode>
 )
 
 data class FullMessageNode(
@@ -211,11 +213,11 @@ data class ParticipantCustomization(
 // request object
 
 
-data class RequestRoot(
-		@SerializedName("o0") val request: Request
+data class RequestContainer(
+		@SerializedName("o0") val query: Query
 )
 
-data class Request(
+data class Query(
 		@SerializedName("doc_id") val docId: String, //1508526735892416
 		@SerializedName("query_params") val queryParams: QueryParams
 )
