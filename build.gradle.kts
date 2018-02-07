@@ -34,6 +34,7 @@ application {
 repositories {
 	mavenCentral()
 	jcenter()
+	maven("https://jitpack.io")
 }
 
 dependencies {
@@ -41,6 +42,7 @@ dependencies {
 	compile("com.squareup.okhttp3", "okhttp", "3.9.1")
 	compile("com.google.code.gson", "gson", "2.8.2")
 	compile("io.github.config4k", "config4k", "0.3.2")
+	compile("com.github.ralfstuckert.pdfbox-layout", "pdfbox2-layout", "1.0.0")
 }
 
 tasks.withType<KotlinCompile> {
