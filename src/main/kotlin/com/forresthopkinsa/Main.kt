@@ -2,7 +2,7 @@ package com.forresthopkinsa
 
 import com.forresthopkinsa.model.FullMessageNode
 import com.forresthopkinsa.render.HelloPdf
-import com.forresthopkinsa.render.HigherPdf
+import rst.pdfbox.layout.text.Alignment
 import java.text.DateFormat
 import java.util.*
 
@@ -16,13 +16,10 @@ fun main(args: Array<String>) {
 	messages.forEach(::messagePrinter)
 	
 	val pdf = HelloPdf()
-	val pdf2 = HigherPdf()
 	
-	pdfTest(pdf::append)
-	pdfTest(pdf2::append)
+	pdfTest { pdf.append(it, Alignment.Left) }
 	
 	pdf.close()
-	pdf2.close()
 }
 
 fun messagePrinter(message: FullMessageNode) {
