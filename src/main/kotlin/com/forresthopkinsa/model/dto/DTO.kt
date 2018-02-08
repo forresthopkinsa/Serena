@@ -1,4 +1,4 @@
-package com.forresthopkinsa.model
+package com.forresthopkinsa.model.dto
 
 import com.google.gson.annotations.SerializedName
 
@@ -81,7 +81,7 @@ data class SimpleMessageNode(
 		@SerializedName("commerce_message_type") val commerceMessageType: Any,
 		@SerializedName("extensible_attachment") val extensibleAttachment: Any,
 		@SerializedName("sticker") val sticker: Sticker,
-		@SerializedName("blob_attachments") val blobAttachments: List<Any>
+		@SerializedName("blob_attachments") val blobAttachments: List<Attachment>
 )
 
 data class SimpleMessageSender(
@@ -139,8 +139,8 @@ data class FullMessageNode(
 		@SerializedName("message") val message: Message,
 		@SerializedName("meta_ranges") val metaRanges: List<Any>,
 		@SerializedName("extensible_attachment") val extensibleAttachment: Any,
-		@SerializedName("sticker") val sticker: Any,
-		@SerializedName("blob_attachments") val blobAttachments: List<Any>,
+		@SerializedName("sticker") val sticker: Sticker?,
+		@SerializedName("blob_attachments") val blobAttachments: List<Attachment>,
 		@SerializedName("page_admin_sender") val pageAdminSender: Any
 )
 
@@ -208,6 +208,28 @@ data class CustomizationInfo(
 data class ParticipantCustomization(
 		@SerializedName("participant_id") val participantId: String,
 		@SerializedName("nickname") val nickname: String
+)
+
+data class Attachment(
+		@SerializedName("__typename") val type: String,
+		@SerializedName("attribution_app") val attrApp: Any?,
+		@SerializedName("attribution_metadata") val attrMeta: Any?,
+		@SerializedName("filename") val fileName: String,
+		@SerializedName("animated_image") val gif: Image?,
+		@SerializedName("legacy_attachment_id") val id: String,
+		@SerializedName("preview_image") val preview: Image?,
+		@SerializedName("original_dimensions") val dimensions: Dimensions?
+)
+
+data class Image(
+		@SerializedName("uri") val uri: String,
+		@SerializedName("height") val height: Int,
+		@SerializedName("width") val width: Int
+)
+
+data class Dimensions(
+		@SerializedName("x") val x: Int,
+		@SerializedName("y") val y: Int
 )
 
 // request object

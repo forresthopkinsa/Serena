@@ -1,6 +1,6 @@
 package com.forresthopkinsa
 
-import com.forresthopkinsa.model.RequestContainer
+import com.forresthopkinsa.model.dto.RequestContainer
 import okhttp3.FormBody
 import okhttp3.Request
 

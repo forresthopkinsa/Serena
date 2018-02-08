@@ -1,8 +1,6 @@
 package com.forresthopkinsa
 
-import com.forresthopkinsa.model.Query
-import com.forresthopkinsa.model.QueryParams
-import com.forresthopkinsa.model.RequestContainer
+import com.forresthopkinsa.model.dto.*
 import com.typesafe.config.ConfigFactory
 
 object Config {

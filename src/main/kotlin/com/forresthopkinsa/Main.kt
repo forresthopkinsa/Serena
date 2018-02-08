@@ -1,46 +1,41 @@
 package com.forresthopkinsa
 
-import com.forresthopkinsa.model.FullMessageNode
+import com.forresthopkinsa.model.dto.FullMessageNode
 import com.forresthopkinsa.render.HelloPdf
 import rst.pdfbox.layout.text.Alignment
 import java.text.DateFormat
-import java.util.*
 
 fun main(args: Array<String>) {
+	
+	val pdf = HelloPdf()
+	
 	val request = Config.request
 	
 	val response = Handler(request).apply { send() }.response!!
 	
 	val messages = response.data.messageThread.messagePage.messages
 	
-	messages.forEach(::messagePrinter)
-	
-	val pdf = HelloPdf()
-	
-	pdfTest { pdf.append(it, Alignment.Left) }
+	messages.forEach { messagePrinter(it, pdf) }
 	
 	pdf.close()
 }
 
-fun messagePrinter(message: FullMessageNode) {
+fun messagePrinter(message: FullMessageNode, pdf: HelloPdf) {
 	val sender: String = when (message.messageSender.id) {
-		Config.myId ->  "Forrest"
+		Config.myId -> "Forrest"
 		Config.herId -> "Serena "
 		else -> "???????"
 	}
 	
-	val time = Date(message.timestampPrecise.toLong())
-	val date = DateFormat.getDateTimeInstance().format(time)
+	val msg = Converter.toMessage(message)
 	
-	val text = message.message.text
+	val date = DateFormat.getDateTimeInstance().format(msg.time)
+	
+	val text = msg.text ?: msg.imageUrl ?: "<<<NULL>>>"
 	
 	println("($date) $sender: $text")
 	
-}
-
-fun pdfTest(append: (String) -> Unit) {
-	append("Hello")
-	append("World!")
-	for (i in 1..50)
-		append("number $i")
+	val align = if (sender == "Forrest") Alignment.Left else Alignment.Right
+	pdf.append(text, align)
+	
 }

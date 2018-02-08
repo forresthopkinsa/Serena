@@ -4,6 +4,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font
 import rst.pdfbox.layout.elements.Document
 import rst.pdfbox.layout.elements.Frame
 import rst.pdfbox.layout.elements.Paragraph
+import rst.pdfbox.layout.elements.render.VerticalLayoutHint
 import rst.pdfbox.layout.shape.RoundRect
 import rst.pdfbox.layout.text.Alignment
 import rst.pdfbox.layout.text.StyledText
@@ -18,9 +19,10 @@ class HelloPdf {
 	private val radius = 13F
 	
 	fun append(text: String, align: Alignment) {
+		if (text.isBlank()) return
+		
 		val paragraph = Paragraph()
 		paragraph.add(StyledText(text, 14F, PDType1Font.HELVETICA, fgColor))
-		paragraph.alignment = align
 		
 		val frame = Frame(paragraph)
 		frame.shape = RoundRect(radius)
@@ -29,11 +31,11 @@ class HelloPdf {
 		frame.setPadding(10F, 10F, 5F, 5F)
 		frame.setMargin(0F, 0F, 2F, 2F)
 		
-		document.add(frame)
+		document.add(frame, VerticalLayoutHint(align))
 	}
 	
 	fun close() {
-		document.save(File("helloworld.pdf"))
+		document.save(File("output/helloworld.pdf"))
 	}
 	
 }
