@@ -21,13 +21,9 @@ fun main(args: Array<String>) {
 }
 
 fun messagePrinter(message: FullMessageNode, pdf: HelloPdf) {
-	val sender: String = when (message.messageSender.id) {
-		Config.myId -> "Forrest"
-		Config.herId -> "Serena "
-		else -> "???????"
-	}
-	
 	val msg = Converter.toMessage(message)
+	
+	val sender = msg.sender.name
 	
 	val date = DateFormat.getDateTimeInstance().format(msg.time)
 	
