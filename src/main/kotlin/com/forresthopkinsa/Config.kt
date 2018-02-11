@@ -13,15 +13,16 @@ object Config {
 	
 	private const val DOC_ID = "1508526735892416"
 	private const val SERENA_ID = "100000746827681"
+	private const val MESSAGES = 128
 	
 	val request: Request
 		get() {
-			val query = RequestContainer(Query(DOC_ID, QueryParams(SERENA_ID, 15)))
+			val query = RequestContainer(Query(DOC_ID, QueryParams(SERENA_ID, MESSAGES)))
 			
 			return Request(dtsg, c_user, xs, query)
 		}
 	
-	val myId = c_user
-	val herId = SERENA_ID
+	val myId = c_user!!
+	const val herId = SERENA_ID
 	
 }

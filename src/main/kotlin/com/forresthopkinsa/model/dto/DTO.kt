@@ -211,15 +211,26 @@ data class ParticipantCustomization(
 )
 
 data class Attachment(
-		@SerializedName("__typename") val type: String,
-		@SerializedName("attribution_app") val attrApp: Any?,
+		@SerializedName("__typename") val type: AttachmentType, // MessageImage, MessageAnimatedImage
+		@SerializedName("attribution_app") val attrApp: AttributionApp?,
 		@SerializedName("attribution_metadata") val attrMeta: Any?,
 		@SerializedName("filename") val fileName: String,
-		@SerializedName("animated_image") val gif: Image?,
+		@SerializedName("animated_image") val gif: Image?,              // only if gif
+		@SerializedName("preview") val preview: Image?,                 // only if image
+		@SerializedName("large_preview") val previewLarge: Image?,      // only if image
+		@SerializedName("thumbnail") val thumbnail: URI?,               // only if image
+		@SerializedName("photo_encodings") val encodings: List<Any>?,   // only if image
 		@SerializedName("legacy_attachment_id") val id: String,
-		@SerializedName("preview_image") val preview: Image?,
-		@SerializedName("original_dimensions") val dimensions: Dimensions?
+		@SerializedName("preview_image") val gifPreview: Image?,        // only if gif
+		@SerializedName("original_dimensions") val dimensions: Dimensions?,
+		@SerializedName("original_extension") val fileExt: String?,     // only if image
+		@SerializedName("render_as_sticker") val isSticker: Boolean?
 )
+
+enum class AttachmentType {
+	@SerializedName("MessageImage") IMAGE,
+	@SerializedName("MessageAnimatedImage") GIF
+}
 
 data class Image(
 		@SerializedName("uri") val uri: String,
@@ -230,6 +241,16 @@ data class Image(
 data class Dimensions(
 		@SerializedName("x") val x: Int,
 		@SerializedName("y") val y: Int
+)
+
+data class AttributionApp(
+		@SerializedName("id") val id: String,
+		@SerializedName("name") val name: String,
+		@SerializedName("square_logo") val logo: URI
+)
+
+data class URI(
+		@SerializedName("uri") val uri: String
 )
 
 // request object

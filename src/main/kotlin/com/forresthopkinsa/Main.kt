@@ -2,7 +2,6 @@ package com.forresthopkinsa
 
 import com.forresthopkinsa.model.dto.FullMessageNode
 import com.forresthopkinsa.render.HelloPdf
-import rst.pdfbox.layout.text.Alignment
 import java.text.DateFormat
 
 fun main(args: Array<String>) {
@@ -31,7 +30,6 @@ fun messagePrinter(message: FullMessageNode, pdf: HelloPdf) {
 	
 	println("($date) $sender: $text")
 	
-	val align = if (sender == "Forrest") Alignment.Left else Alignment.Right
-	pdf.append(text, align)
+	pdf.append(msg)
 	
 }

@@ -9,5 +9,5 @@ data class Text(
 		override val sender: Actor
 ) : Message {
 	override val imageUrl: String? = null
-	override val type: MessageType = MessageType.IMAGE
+	override val type: MessageType = MessageType.MEDIA
 }
