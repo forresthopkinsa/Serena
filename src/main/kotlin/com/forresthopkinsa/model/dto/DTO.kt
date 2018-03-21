@@ -1,6 +1,7 @@
 package com.forresthopkinsa.model.dto
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
 
 data class ResponseContainer(
 		@SerializedName("o0") val response: Response
@@ -119,7 +120,7 @@ data class MessagePage(
 )
 
 data class FullMessageNode(
-		@SerializedName("__typename") val typename: String,
+		@SerializedName("__typename") val type: MessageType?,
 		@SerializedName("message_id") val messageId: String,
 		@SerializedName("offline_threading_id") val offlineThreadingId: String,
 		@SerializedName("message_sender") val messageSender: MessageSender,
@@ -127,22 +128,38 @@ data class FullMessageNode(
 		@SerializedName("timestamp_precise") val timestampPrecise: String,
 		@SerializedName("unread") val unread: Boolean,
 		@SerializedName("is_sponsored") val isSponsored: Boolean,
-		@SerializedName("ad_id") val adId: Any,
-		@SerializedName("ad_client_token") val adClientToken: Any,
-		@SerializedName("commerce_message_type") val commerceMessageType: Any,
+		@SerializedName("ad_id") val adId: Any?,
+		@SerializedName("ad_client_token") val adClientToken: Any?,
+		@SerializedName("commerce_message_type") val commerceMessageType: Any?,
 		@SerializedName("customizations") val customizations: List<Any>,
 		@SerializedName("tags_list") val tagsList: List<String>,
-		@SerializedName("platform_xmd_encoded") val platformXmdEncoded: Any,
-		@SerializedName("message_source_data") val messageSourceData: Any,
-		@SerializedName("montage_reply_data") val montageReplyData: Any,
+		@SerializedName("platform_xmd_encoded") val platformXmdEncoded: Any?,
+		@SerializedName("message_source_data") val messageSourceData: Any?,
+		@SerializedName("montage_reply_data") val montageReplyData: Any?,
 		@SerializedName("message_reactions") val messageReactions: List<Any>,
-		@SerializedName("message") val message: Message,
+		/** Only if UserMessage */
+		@SerializedName("message") val message: Message?,
+		/** Only if UserMessage */
 		@SerializedName("meta_ranges") val metaRanges: List<Any>,
-		@SerializedName("extensible_attachment") val extensibleAttachment: Any,
+		/** Only if UserMessage */
+		@SerializedName("extensible_attachment") val extensibleAttachment: ExtensibleAttachment?,
+		/** Only if UserMessage */
 		@SerializedName("sticker") val sticker: Sticker?,
-		@SerializedName("blob_attachments") val blobAttachments: List<Attachment>,
-		@SerializedName("page_admin_sender") val pageAdminSender: Any
+		/** Only if UserMessage */
+		@SerializedName("blob_attachments") val blobAttachments: List<Attachment>?,
+		/** Only if UserMessage */
+		@SerializedName("page_admin_sender") val pageAdminSender: Any?,
+		/** Only if VoiceCallMessage, VideoCallmessage */
+		@SerializedName("answered") val callAnswered: Boolean?,
+		/** Only if VoiceCallMessage, VideoCallmessage */
+		@SerializedName("snippet") val callSnippet: String?
 )
+
+enum class MessageType {
+	@SerializedName("UserMessage") USER,
+	@SerializedName("VoiceCallMessage") VOICECALL,
+	@SerializedName("VideoCallMessage") VIDEOCALL
+}
 
 data class Message(
 		@SerializedName("text") val text: String,
@@ -210,26 +227,102 @@ data class ParticipantCustomization(
 		@SerializedName("nickname") val nickname: String
 )
 
+data class ExtensibleAttachment(
+		@SerializedName("legacy_attachment_id") val id: String,
+		@SerializedName("story_attachment") val story: StoryAttachment
+)
+
+data class StoryAttachment(
+		@SerializedName("description") val description: Text?,
+		@SerializedName("media") val media: Media?,
+		@SerializedName("source") val source: Text?,
+		@SerializedName("style_list") val styles: List<String>,
+		@SerializedName("title_with_entities") val title: Text,
+		@SerializedName("properties") val properties: List<Property>,
+		@SerializedName("url") val url: String?,
+		@SerializedName("deduplication_key") val key: String,
+		@SerializedName("action_links") val links: List<Link>,
+		@SerializedName("messaging_attribution") val attribution: Any?,
+		@SerializedName("messenger_call_to_actions") val callsToAction: List<Any>,
+		@SerializedName("target") val target: Typename?,
+		@SerializedName("subattachments") val subattachments: List<StoryAttachment>?
+)
+
+data class Media(
+		@SerializedName("animated_image") val gif: Image?,
+		@SerializedName("image") val image: Image,
+		@SerializedName("playable_duration_in_ms") val duration: Int,
+		@SerializedName("is_playable") val playable: Boolean,
+		@SerializedName("playable_url") val url: String?
+)
+
+data class Text(
+		@SerializedName("text") val content: String
+)
+
+data class Link(
+		@SerializedName("title") val title: String,
+		@SerializedName("url") val url: String?
+)
+
+data class Typename(
+		@SerializedName("__typename") val content: String
+)
+
+data class Property(
+		@SerializedName("key") val key: String,
+		@SerializedName("value") val value: Text
+)
+
 data class Attachment(
-		@SerializedName("__typename") val type: AttachmentType, // MessageImage, MessageAnimatedImage
+		@SerializedName("__typename") val type: AttachmentType,
 		@SerializedName("attribution_app") val attrApp: AttributionApp?,
 		@SerializedName("attribution_metadata") val attrMeta: Any?,
 		@SerializedName("filename") val fileName: String,
-		@SerializedName("animated_image") val gif: Image?,              // only if gif
-		@SerializedName("preview") val preview: Image?,                 // only if image
-		@SerializedName("large_preview") val previewLarge: Image?,      // only if image
-		@SerializedName("thumbnail") val thumbnail: URI?,               // only if image
-		@SerializedName("photo_encodings") val encodings: List<Any>?,   // only if image
+		/** Only if video, audio */
+		@SerializedName("playable_url") val playUrl: String?,
+		/** Only if video */
+		@SerializedName("chat_image") val videoPreviewSmall: Image?,
+		/** Only if gif */
+		@SerializedName("animated_image") val gif: Image?,
+		/** Only if image */
+		@SerializedName("preview") val preview: Image?,
+		/** Only if image */
+		@SerializedName("large_preview") val previewLarge: Image?,
+		/** Only if image */
+		@SerializedName("thumbnail") val thumbnail: URI?,
+		/** Only if image */
+		@SerializedName("photo_encodings") val encodings: List<Any>?,
 		@SerializedName("legacy_attachment_id") val id: String,
-		@SerializedName("preview_image") val gifPreview: Image?,        // only if gif
+		/** Only if video */
+		@SerializedName("video_type") val videoType: String?,
+		/** Only if gif */
+		@SerializedName("preview_image") val gifPreview: Image?,
 		@SerializedName("original_dimensions") val dimensions: Dimensions?,
-		@SerializedName("original_extension") val fileExt: String?,     // only if image
-		@SerializedName("render_as_sticker") val isSticker: Boolean?
+		/** Only if image */
+		@SerializedName("original_extension") val fileExt: String?,
+		@SerializedName("render_as_sticker") val isSticker: Boolean?,
+		/** Only if video, audio */
+		@SerializedName("playable_duration_in_ms") val duration: Int?,
+		/** Only if video */
+		@SerializedName("large_image") val videoPreviewLarge: Image?,
+		/** Only if video */
+		@SerializedName("inbox_image") val videoPreviewMedium: Image?,
+		/** Only if audio */
+		@SerializedName("is_voicemail") val voicemail: Boolean?,
+		/** Only if audio */
+		@SerializedName("audio_type") val audioType: String?,
+		/** Only if audio */
+		@SerializedName("url_shimhash") val shimhash: String?,
+		/** Only if audio */
+		@SerializedName("url_skipshim") val skipshim: Boolean?
 )
 
 enum class AttachmentType {
 	@SerializedName("MessageImage") IMAGE,
-	@SerializedName("MessageAnimatedImage") GIF
+	@SerializedName("MessageAnimatedImage") GIF,
+	@SerializedName("MessageVideo") VIDEO,
+	@SerializedName("MessageAudio") AUDIO
 }
 
 data class Image(
@@ -270,5 +363,5 @@ data class QueryParams(
 		@SerializedName("message_limit") val messageLimit: Int, //200
 		@SerializedName("load_messages") val loadMessages: Int = 1, //1
 		@SerializedName("load_read_receipts") val loadReadReceipts: Boolean = true, //true
-		@SerializedName("before") val before: Int? = null //null
+		@SerializedName("before") val before: BigInteger? = null //null
 )

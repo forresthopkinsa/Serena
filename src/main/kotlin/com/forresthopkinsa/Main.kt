@@ -2,6 +2,7 @@ package com.forresthopkinsa
 
 import com.forresthopkinsa.model.dto.FullMessageNode
 import com.forresthopkinsa.render.HelloPdf
+import com.google.gson.Gson
 import java.text.DateFormat
 
 fun main(args: Array<String>) {
@@ -9,6 +10,8 @@ fun main(args: Array<String>) {
 	val pdf = HelloPdf()
 	
 	val request = Config.request
+	
+	println(Gson().toJson(request))
 	
 	val response = Handler(request).apply { send() }.response!!
 	

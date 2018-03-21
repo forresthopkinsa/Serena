@@ -20,7 +20,7 @@ class HelloPdf {
 	
 	private val document = Document(40F, 50F, 40F, 60F)
 	private val fgColor = Color.WHITE
-	private val bgColor = Color(86, 181, 111)
+	private val bgColor = Color(103, 184, 104)
 	private val radius = 13F
 	
 	fun append(message: Message) {

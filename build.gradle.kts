@@ -2,14 +2,14 @@ import org.gradle.script.lang.kotlin.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
-	var kotlin_version: String by extra
-	kotlin_version = "1.2.21"
+	var kVersion: String by extra
+	kVersion = "1.2.21"
 	
 	repositories {
 		mavenCentral()
 	}
 	dependencies {
-		classpath(kotlin("gradle-plugin", kotlin_version))
+		classpath(kotlin("gradle-plugin", kVersion))
 	}
 }
 
@@ -25,7 +25,7 @@ apply {
 	plugin("kotlin")
 }
 
-val kotlin_version: String by extra
+val kVersion: String by extra
 
 application {
 	mainClassName = "MainKt"
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-	compile(kotlin("stdlib-jdk8", kotlin_version))
+	compile(kotlin("stdlib-jdk8", kVersion))
 	compile("com.squareup.okhttp3", "okhttp", "3.9.1")
 	compile("com.google.code.gson", "gson", "2.8.2")
 	compile("io.github.config4k", "config4k", "0.3.2")

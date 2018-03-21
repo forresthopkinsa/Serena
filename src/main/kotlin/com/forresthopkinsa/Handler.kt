@@ -1,7 +1,9 @@
 package com.forresthopkinsa
 
-import com.forresthopkinsa.model.dto.*
+import com.forresthopkinsa.model.dto.Response
+import com.forresthopkinsa.model.dto.ResponseContainer
 import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 class Handler(private val request: Request) {
 	
@@ -9,8 +11,14 @@ class Handler(private val request: Request) {
 	
 	private var json: String? = null
 	
+	private val client = OkHttpClient.Builder()
+			.connectTimeout(25, TimeUnit.SECONDS)
+			.readTimeout(25, TimeUnit.SECONDS)
+			.writeTimeout(25, TimeUnit.SECONDS)
+			.build()
+	
 	fun send(): Boolean {
-		okResp = OkHttpClient().newCall(request.okHttpRequest).execute()
+		okResp = client.newCall(request.okHttpRequest).execute()
 		
 		json = okResp?.body()?.string()?.dropLast(79)
 		
