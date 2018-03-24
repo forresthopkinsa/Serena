@@ -312,6 +312,14 @@ data class Attachment(
 		@SerializedName("is_voicemail") val voicemail: Boolean?,
 		/** Only if audio */
 		@SerializedName("audio_type") val audioType: String?,
+		/** Only if file */
+		@SerializedName("url") val fileUrl: String?,
+		/** Only if file */
+		@SerializedName("content_type") val fileType: String?,
+		/** Only if file */
+		@SerializedName("is_malicious") val isMalicious: Boolean?,
+		/** Only if file */
+		@SerializedName("message_file_fbid") val fileId: String?,
 		/** Only if audio */
 		@SerializedName("url_shimhash") val shimhash: String?,
 		/** Only if audio */
@@ -322,7 +330,8 @@ enum class AttachmentType {
 	@SerializedName("MessageImage") IMAGE,
 	@SerializedName("MessageAnimatedImage") GIF,
 	@SerializedName("MessageVideo") VIDEO,
-	@SerializedName("MessageAudio") AUDIO
+	@SerializedName("MessageAudio") AUDIO,
+	@SerializedName("MessageFile") FILE
 }
 
 data class Image(

@@ -29,6 +29,7 @@ object Converter {
 		GIF -> toGif(node)
 		VIDEO -> toVideo(node)
 		AUDIO -> toAudio(node)
+		FILE -> toFile(node)
 	}
 	
 	private fun toExtensible(node: FullMessageNode) = when {
@@ -53,6 +54,8 @@ object Converter {
 	private fun toVideo(node: FullMessageNode) = Media(node.blobAttachments!![0].videoPreviewSmall!!.uri, node.timestampPrecise.toDate(), node.messageSender.toActor())
 	
 	private fun toAudio(node: FullMessageNode) = Media(AUDIO_IMAGE, node.timestampPrecise.toDate(), node.messageSender.toActor())
+	
+	private fun toFile(node: FullMessageNode) = Text(node.blobAttachments!![0].fileName, node.timestampPrecise.toDate(), node.messageSender.toActor())
 	
 	private fun toCall(node: FullMessageNode) = Text(node.callSnippet!!, node.timestampPrecise.toDate(), node.messageSender.toActor())
 	
